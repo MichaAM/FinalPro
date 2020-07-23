@@ -45,19 +45,52 @@ Summary statistics:
 ```{r}
 summary(ffp)
 ```
-Variables overview: 
+Database dimensions:  
 
 ```{r}
-glimpse(ffp)
+dim(ffp)
 ```
 
+### convert variables to factors
 
+```{r}
+ffp$CALL_FLAG <- as.factor(ffp$CALL_FLAG)
+ffp$CREDIT_PROBLEM <- as.factor(ffp$CREDIT_PROBLEM)
+ffp$GROUP <- as.factor(ffp$GROUP)
+ffp$CHEF_CLUB <- as.factor(ffp$CHEF_CLUB)
+ffp$NUM_DEAL <- as.factor(ffp$NUM_DEAL)
+ffp$CALL_FLAG <- as.factor(ffp$CALL_FLAG)
+ffp$CREDIT_PROBLEM <- as.factor(ffp$CREDIT_PROBLEM)
+ffp$RETURN_FLAG <- as.factor(ffp$RETURN_FLAG)
+ffp$BENEFIT_FLAG <- as.factor(ffp$BENEFIT_FLAG)
+ffp$BUYER_FLAG <- as.factor(ffp$BUYER_FLAG)
+```
 
+### Frequency table for last deal price 
 
+```{r}
+ds_freq_table(ffp, LAST_DEAL, 4) # 94.4% of costumers last deal price was under 123$ 
+```
+### Frequency of average days between purchases 
 
+```{r}
+ds_freq_table(ffp, ADVANCE_PURCHASE, 4) # 71% between 15-24 days between purchases 
+mean(ffp$ADVANCE_PURCHASE) # 20.6 days in average 
+```
 
+# Frequency of Total cost of transactions made per year
+```{r}
+ds_freq_table(ffp, FARE_L_Y1, 10) # 80% of them 103 - 207
+ds_freq_table(ffp, FARE_L_Y2, 10) # Similar - # 80% of them 104 - 209
+ds_freq_table(ffp, FARE_L_Y3, 10) # 80% of them 99 - 198
+ds_freq_table(ffp, FARE_L_Y4, 10) # 80% of them 99 - 198 
+```
 
+### TARGET variable - Has the customer purchased following the gift
 
+```{r}
+table(ffp$BUYER_FLAG) # Only 4211 did buy the full product 
+```
 
 
 
