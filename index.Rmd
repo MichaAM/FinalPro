@@ -13,18 +13,29 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This is an R Markdown based document for presenting the project results. The main target of the project is to build a predictive model. 
 
+### Loading R packages 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(descriptr)
+library(knitr)
+library(ggplot2)
+library(mice)
+library(lattice)
+library(reshape2)
+install.packages("DataExplorer")
+library(DataExplorer)
+```
+
 ### Uploading the data
 
 ```{r}
 ffp <- read.csv("ffp_train.csv")
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+### Overview od the first data set - ffp 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+Look for NA's:
+```{r}
+ds_screener(ffp)
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
