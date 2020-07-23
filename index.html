@@ -303,10 +303,14 @@ $(document).ready(function () {
 <p>This is an R Markdown based document for presenting the project results. The main target of the project is to build a predictive model.</p>
 <div id="loading-r-packages" class="section level3">
 <h3>Loading R packages</h3>
-<pre><code>## package &#39;DataExplorer&#39; successfully unpacked and MD5 sums checked
-## 
-## The downloaded binary packages are in
-##  C:\Users\user\AppData\Local\Temp\Rtmpi84HFi\downloaded_packages</code></pre>
+<pre class="r"><code>library(tidyverse)
+library(descriptr)
+library(knitr)
+library(ggplot2)
+library(mice)
+library(lattice)
+library(reshape2)
+library(DataExplorer)</code></pre>
 </div>
 <div id="uploading-the-data" class="section level3">
 <h3>Uploading the data</h3>
