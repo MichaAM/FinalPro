@@ -1,6 +1,6 @@
 ---
-title: "Main page of my projects site"
-author: "Micha Amsalem"
+title: "Final project -   Advanced Topics in Data Mining and Knowledge Discovery"
+author: "Micha Amsalem and Ohad Hazan"
 date: "23 7 2020"
 output: html_document
 ---
