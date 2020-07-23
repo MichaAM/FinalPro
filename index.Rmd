@@ -78,19 +78,93 @@ ds_freq_table(ffp, ADVANCE_PURCHASE, 4) # 71% between 15-24 days between purchas
 mean(ffp$ADVANCE_PURCHASE) # 20.6 days in average 
 ```
 
-# Frequency of Total cost of transactions made per year
-```{r}
-ds_freq_table(ffp, FARE_L_Y1, 10) # 80% of them 103 - 207
-ds_freq_table(ffp, FARE_L_Y2, 10) # Similar - # 80% of them 104 - 209
-ds_freq_table(ffp, FARE_L_Y3, 10) # 80% of them 99 - 198
-ds_freq_table(ffp, FARE_L_Y4, 10) # 80% of them 99 - 198 
-```
 
 ### TARGET variable - Has the customer purchased following the gift
 
 ```{r}
 table(ffp$BUYER_FLAG) # Only 4211 did buy the full product 
 ```
+### The company spent 48$*45000 = 2,160,000 and earned 4211*297$ = 1,250,667 - losS of 910K $
+
+# Creating a baseline model using logistic regression
+
+### Convert all variables to numeric 
+```{r}
+ffp[, 1:21] <- sapply(ffp[, 1:21], as.character)
+ffp[, 1:21] <- sapply(ffp[, 1:21], as.numeric)
+```
+
+
+
+# Correlation heat map
+```{r}
+plot_correlation(ffp, maxcat = 5L) # Consider removing Group, NUM_DEAL, CREDIT_PROBLEM, RETURN_FLAG - week correlation with BUYER FLAG
+```
+
+
+total_cor_table <- cor(ffp)
+
+
+### Split the data 
+# create a list of random number ranging from 1 to number of rows from actual data and 70% of the data into training data  
+ffp_index <- sort(sample(nrow(ffp), nrow(ffp)*.7)) 
+
+# Creating training data set
+train <- ffp[ffp_index,]
+
+# Creating validation data set 
+test <- ffp[-ffp_index,]
+
+
+## fit a logistic regression model with the training data set
+log.model <- glm(BUYER_FLAG ~., data = train, family = binomial(link = "logit"))
+
+summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are significant variables 
+
+## Predict using logistic regression model
+log.predictions <- predict(log.model, test, type="response")
+
+# Probabilities top 10
+head(log.predictions, 10)
+
+# Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0
+log.prediction.rd <- ifelse(log.predictions > 0.2, 1, 0) # Different cutoffs gives different accuracy measure 
+### Evaluation of the model using confusion matrix 
+table(log.prediction.rd, test[,21])
+
+# Accuracy 
+accuracy <- table(log.prediction.rd, test[,21])
+sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%
+
+# Business meaning - If we use the log.prediction with 10% cutoff, we would get: 297*383 - (1908+383)*48 = 113,751-109,968 = 3783$ 
+# If we use the log.prediction with 20% cutoff, we would get: 198*297 - (491+198)*48 = 58,806-33,072 = 25,734$
+
+# Try creating new data containing only significant values 
+train__new <- select(train, -one_of('GROUP', "NUM_DEAL", "CREDIT_PROBLEM", "RETURN_FLAG"))
+test__new <- select(test, -one_of('GROUP', "NUM_DEAL", "CREDIT_PROBLEM", "RETURN_FLAG"))
+
+## fit a logistic regression model with the training data set
+log.model <- glm(BUYER_FLAG ~., data = train__new, family = binomial(link = "logit"))
+
+summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are significant variables 
+
+## Predict using logistic regression model
+log.predictions <- predict(log.model, test__new, type="response")
+
+# Probabilities top 10
+head(log.predictions, 10)
+
+# Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0
+log.prediction.rd <- ifelse(log.predictions > 0.2, 1, 0) # Different cutoffs gives different accuracy measure 
+### Evaluation of the model using confusion matrix 
+table(log.prediction.rd, ffp_test__new[,17])
+
+# Accuracy 
+accuracy <- table(log.prediction.rd, ffp_test__new[,17])
+sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%
+
+# Using less variables didn't change log model accuracy 
+
 
 
 

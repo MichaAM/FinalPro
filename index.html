@@ -428,117 +428,6 @@ ffp$BUYER_FLAG &lt;- as.factor(ffp$BUYER_FLAG)</code></pre>
 <pre class="r"><code>mean(ffp$ADVANCE_PURCHASE) # 20.6 days in average </code></pre>
 <pre><code>## [1] 20.67869</code></pre>
 </div>
-</div>
-<div id="frequency-of-total-cost-of-transactions-made-per-year" class="section level1">
-<h1>Frequency of Total cost of transactions made per year</h1>
-<pre class="r"><code>ds_freq_table(ffp, FARE_L_Y1, 10) # 80% of them 103 - 207</code></pre>
-<pre><code>##                              Variable: FARE_L_Y1                              
-## |---------------------------------------------------------------------------|
-## |      Bins       | Frequency | Cum Frequency |   Percent    | Cum Percent  |
-## |---------------------------------------------------------------------------|
-## |   0    -  51.8  |    108    |      108      |     0.24     |     0.24     |
-## |---------------------------------------------------------------------------|
-## |  51.8  - 103.7  |   3213    |     3321      |     7.14     |     7.38     |
-## |---------------------------------------------------------------------------|
-## | 103.7  - 155.5  |   27517   |     30838     |    61.15     |    68.53     |
-## |---------------------------------------------------------------------------|
-## | 155.5  - 207.3  |   8604    |     39442     |    19.12     |    87.65     |
-## |---------------------------------------------------------------------------|
-## | 207.3  - 259.1  |   3575    |     43017     |     7.94     |    95.59     |
-## |---------------------------------------------------------------------------|
-## | 259.1  -  311   |   1422    |     44439     |     3.16     |    98.75     |
-## |---------------------------------------------------------------------------|
-## |  311   - 362.8  |    357    |     44796     |     0.79     |    99.55     |
-## |---------------------------------------------------------------------------|
-## | 362.8  - 414.6  |    144    |     44940     |     0.32     |    99.87     |
-## |---------------------------------------------------------------------------|
-## | 414.6  - 466.5  |    50     |     44990     |     0.11     |    99.98     |
-## |---------------------------------------------------------------------------|
-## | 466.5  - 518.3  |    10     |     45000     |     0.02     |     100      |
-## |---------------------------------------------------------------------------|
-## |      Total      |   45000   |       -       |    100.00    |      -       |
-## |---------------------------------------------------------------------------|</code></pre>
-<pre class="r"><code>ds_freq_table(ffp, FARE_L_Y2, 10) # Similar - # 80% of them 104 - 209</code></pre>
-<pre><code>##                              Variable: FARE_L_Y2                              
-## |---------------------------------------------------------------------------|
-## |      Bins       | Frequency | Cum Frequency |   Percent    | Cum Percent  |
-## |---------------------------------------------------------------------------|
-## |   0    -  52.4  |    100    |      100      |     0.22     |     0.22     |
-## |---------------------------------------------------------------------------|
-## |  52.4  - 104.8  |   3545    |     3645      |     7.88     |     8.1      |
-## |---------------------------------------------------------------------------|
-## | 104.8  - 157.3  |   27584   |     31229     |     61.3     |     69.4     |
-## |---------------------------------------------------------------------------|
-## | 157.3  - 209.7  |   8564    |     39793     |    19.03     |    88.43     |
-## |---------------------------------------------------------------------------|
-## | 209.7  - 262.1  |   3311    |     43104     |     7.36     |    95.79     |
-## |---------------------------------------------------------------------------|
-## | 262.1  - 314.5  |   1409    |     44513     |     3.13     |    98.92     |
-## |---------------------------------------------------------------------------|
-## | 314.5  - 366.9  |    294    |     44807     |     0.65     |    99.57     |
-## |---------------------------------------------------------------------------|
-## | 366.9  - 419.4  |    145    |     44952     |     0.32     |    99.89     |
-## |---------------------------------------------------------------------------|
-## | 419.4  - 471.8  |    42     |     44994     |     0.09     |    99.99     |
-## |---------------------------------------------------------------------------|
-## | 471.8  - 524.2  |     6     |     45000     |     0.01     |     100      |
-## |---------------------------------------------------------------------------|
-## |      Total      |   45000   |       -       |    100.00    |      -       |
-## |---------------------------------------------------------------------------|</code></pre>
-<pre class="r"><code>ds_freq_table(ffp, FARE_L_Y3, 10) # 80% of them 99 - 198</code></pre>
-<pre><code>##                              Variable: FARE_L_Y3                              
-## |---------------------------------------------------------------------------|
-## |      Bins       | Frequency | Cum Frequency |   Percent    | Cum Percent  |
-## |---------------------------------------------------------------------------|
-## |   0    -  49.6  |    98     |      98       |     0.22     |     0.22     |
-## |---------------------------------------------------------------------------|
-## |  49.6  -  99.2  |   1634    |     1732      |     3.63     |     3.85     |
-## |---------------------------------------------------------------------------|
-## |  99.2  - 148.7  |   26049   |     27781     |    57.89     |    61.74     |
-## |---------------------------------------------------------------------------|
-## | 148.7  - 198.3  |   10761   |     38542     |    23.91     |    85.65     |
-## |---------------------------------------------------------------------------|
-## | 198.3  - 247.9  |   4019    |     42561     |     8.93     |    94.58     |
-## |---------------------------------------------------------------------------|
-## | 247.9  - 297.5  |   1569    |     44130     |     3.49     |    98.07     |
-## |---------------------------------------------------------------------------|
-## | 297.5  - 347.1  |    595    |     44725     |     1.32     |    99.39     |
-## |---------------------------------------------------------------------------|
-## | 347.1  - 396.6  |    177    |     44902     |     0.39     |    99.78     |
-## |---------------------------------------------------------------------------|
-## | 396.6  - 446.2  |    78     |     44980     |     0.17     |    99.96     |
-## |---------------------------------------------------------------------------|
-## | 446.2  - 495.8  |    20     |     45000     |     0.04     |     100      |
-## |---------------------------------------------------------------------------|
-## |      Total      |   45000   |       -       |    100.00    |      -       |
-## |---------------------------------------------------------------------------|</code></pre>
-<pre class="r"><code>ds_freq_table(ffp, FARE_L_Y4, 10) # 80% of them 99 - 198 </code></pre>
-<pre><code>##                              Variable: FARE_L_Y4                              
-## |---------------------------------------------------------------------------|
-## |      Bins       | Frequency | Cum Frequency |   Percent    | Cum Percent  |
-## |---------------------------------------------------------------------------|
-## |   0    -  49.4  |    95     |      95       |     0.21     |     0.21     |
-## |---------------------------------------------------------------------------|
-## |  49.4  -  98.8  |   1639    |     1734      |     3.64     |     3.85     |
-## |---------------------------------------------------------------------------|
-## |  98.8  - 148.3  |   25539   |     27273     |    56.75     |    60.61     |
-## |---------------------------------------------------------------------------|
-## | 148.3  - 197.7  |   11238   |     38511     |    24.97     |    85.58     |
-## |---------------------------------------------------------------------------|
-## | 197.7  - 247.1  |   4038    |     42549     |     8.97     |    94.55     |
-## |---------------------------------------------------------------------------|
-## | 247.1  - 296.5  |   1601    |     44150     |     3.56     |    98.11     |
-## |---------------------------------------------------------------------------|
-## | 296.5  - 345.9  |    581    |     44731     |     1.29     |     99.4     |
-## |---------------------------------------------------------------------------|
-## | 345.9  - 395.4  |    159    |     44890     |     0.35     |    99.76     |
-## |---------------------------------------------------------------------------|
-## | 395.4  - 444.8  |    85     |     44975     |     0.19     |    99.94     |
-## |---------------------------------------------------------------------------|
-## | 444.8  - 494.2  |    25     |     45000     |     0.06     |     100      |
-## |---------------------------------------------------------------------------|
-## |      Total      |   45000   |       -       |    100.00    |      -       |
-## |---------------------------------------------------------------------------|</code></pre>
 <div id="target-variable---has-the-customer-purchased-following-the-gift" class="section level3">
 <h3>TARGET variable - Has the customer purchased following the gift</h3>
 <pre class="r"><code>table(ffp$BUYER_FLAG) # Only 4211 did buy the full product </code></pre>
@@ -546,6 +435,93 @@ ffp$BUYER_FLAG &lt;- as.factor(ffp$BUYER_FLAG)</code></pre>
 ##     0     1 
 ## 40789  4211</code></pre>
 </div>
+<div id="the-company-spent-4845000-2160000-and-earned-4211297-1250667---loss-of-910k" class="section level3">
+<h3>The company spent 48<span class="math inline">\(*45000 = 2,160,000 and earned 4211*297\)</span> = 1,250,667 - losS of 910K $</h3>
+</div>
+</div>
+<div id="creating-a-baseline-model-using-logistic-regression" class="section level1">
+<h1>Creating a baseline model using logistic regression</h1>
+<div id="convert-all-variables-to-numeric" class="section level3">
+<h3>Convert all variables to numeric</h3>
+<pre class="r"><code>ffp[, 1:21] &lt;- sapply(ffp[, 1:21], as.character)
+ffp[, 1:21] &lt;- sapply(ffp[, 1:21], as.numeric)</code></pre>
+</div>
+</div>
+<div id="correlation-heat-map" class="section level1">
+<h1>Correlation heat map</h1>
+<pre class="r"><code>plot_correlation(ffp, maxcat = 5L) # Consider removing Group, NUM_DEAL, CREDIT_PROBLEM, RETURN_FLAG - week correlation with BUYER FLAG</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>total_cor_table &lt;- cor(ffp)</p>
+<div id="split-the-data" class="section level3">
+<h3>Split the data</h3>
+</div>
+</div>
+<div id="create-a-list-of-random-number-ranging-from-1-to-number-of-rows-from-actual-data-and-70-of-the-data-into-training-data" class="section level1">
+<h1>create a list of random number ranging from 1 to number of rows from actual data and 70% of the data into training data</h1>
+<p>ffp_index &lt;- sort(sample(nrow(ffp), nrow(ffp)*.7))</p>
+</div>
+<div id="creating-training-data-set" class="section level1">
+<h1>Creating training data set</h1>
+<p>train &lt;- ffp[ffp_index,]</p>
+</div>
+<div id="creating-validation-data-set" class="section level1">
+<h1>Creating validation data set</h1>
+<p>test &lt;- ffp[-ffp_index,]</p>
+<div id="fit-a-logistic-regression-model-with-the-training-data-set" class="section level2">
+<h2>fit a logistic regression model with the training data set</h2>
+<p>log.model &lt;- glm(BUYER_FLAG ~., data = train, family = binomial(link = “logit”))</p>
+<p>summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are significant variables</p>
+</div>
+<div id="predict-using-logistic-regression-model" class="section level2">
+<h2>Predict using logistic regression model</h2>
+<p>log.predictions &lt;- predict(log.model, test, type=“response”)</p>
+</div>
+</div>
+<div id="probabilities-top-10" class="section level1">
+<h1>Probabilities top 10</h1>
+<p>head(log.predictions, 10)</p>
+</div>
+<div id="assign-labels-with-decision-rule-that-if-the-prediction-is-greater-than-0.5-assign-it-1-else-0" class="section level1">
+<h1>Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0</h1>
+<p>log.prediction.rd &lt;- ifelse(log.predictions &gt; 0.2, 1, 0) # Different cutoffs gives different accuracy measure ### Evaluation of the model using confusion matrix table(log.prediction.rd, test[,21])</p>
+</div>
+<div id="accuracy" class="section level1">
+<h1>Accuracy</h1>
+<p>accuracy &lt;- table(log.prediction.rd, test[,21]) sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%</p>
+</div>
+<div id="business-meaning---if-we-use-the-log.prediction-with-10-cutoff-we-would-get-297383---190838348-113751-109968-3783" class="section level1">
+<h1>Business meaning - If we use the log.prediction with 10% cutoff, we would get: 297<em>383 - (1908+383)</em>48 = 113,751-109,968 = 3783$</h1>
+</div>
+<div id="if-we-use-the-log.prediction-with-20-cutoff-we-would-get-198297---49119848-58806-33072-25734" class="section level1">
+<h1>If we use the log.prediction with 20% cutoff, we would get: 198<em>297 - (491+198)</em>48 = 58,806-33,072 = 25,734$</h1>
+</div>
+<div id="try-creating-new-data-containing-only-significant-values" class="section level1">
+<h1>Try creating new data containing only significant values</h1>
+<p>train__new &lt;- select(train, -one_of(‘GROUP’, “NUM_DEAL”, “CREDIT_PROBLEM”, “RETURN_FLAG”)) test__new &lt;- select(test, -one_of(‘GROUP’, “NUM_DEAL”, “CREDIT_PROBLEM”, “RETURN_FLAG”))</p>
+<div id="fit-a-logistic-regression-model-with-the-training-data-set-1" class="section level2">
+<h2>fit a logistic regression model with the training data set</h2>
+<p>log.model &lt;- glm(BUYER_FLAG ~., data = train__new, family = binomial(link = “logit”))</p>
+<p>summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are significant variables</p>
+</div>
+<div id="predict-using-logistic-regression-model-1" class="section level2">
+<h2>Predict using logistic regression model</h2>
+<p>log.predictions &lt;- predict(log.model, test__new, type=“response”)</p>
+</div>
+</div>
+<div id="probabilities-top-10-1" class="section level1">
+<h1>Probabilities top 10</h1>
+<p>head(log.predictions, 10)</p>
+</div>
+<div id="assign-labels-with-decision-rule-that-if-the-prediction-is-greater-than-0.5-assign-it-1-else-0-1" class="section level1">
+<h1>Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0</h1>
+<p>log.prediction.rd &lt;- ifelse(log.predictions &gt; 0.2, 1, 0) # Different cutoffs gives different accuracy measure ### Evaluation of the model using confusion matrix table(log.prediction.rd, ffp_test__new[,17])</p>
+</div>
+<div id="accuracy-1" class="section level1">
+<h1>Accuracy</h1>
+<p>accuracy &lt;- table(log.prediction.rd, ffp_test__new[,17]) sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%</p>
+</div>
+<div id="using-less-variables-didnt-change-log-model-accuracy" class="section level1">
+<h1>Using less variables didn’t change log model accuracy</h1>
 </div>
 
 
