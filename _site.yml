@@ -1,9 +1,13 @@
-name: "Project-website"
+name: "Final project Website"
 output_dir: "."
 navbar:
-  title: "Micha's Projects Website"
+  title: "Final project"
   left:
     - text: "Home"
       href: index.html
     - text: "About Me"
       href: about.html
+output:
+  html_document:
+    theme: flatly
+    css: style.css
