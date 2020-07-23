@@ -34,7 +34,31 @@ ffp <- read.csv("ffp_train.csv")
 
 ### Overview od the first data set - ffp 
 
-Look for NA's:
+Look for NA and missing values:
+
 ```{r}
 ds_screener(ffp)
 ```
+
+Summary statistics: 
+
+```{r}
+summary(ffp)
+```
+Variables overview: 
+
+```{r}
+glimpse(ffp)
+```
+
+
+
+
+
+
+
+
+
+
+
+
