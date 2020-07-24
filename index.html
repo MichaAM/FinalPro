@@ -451,77 +451,182 @@ ffp[, 1:21] &lt;- sapply(ffp[, 1:21], as.numeric)</code></pre>
 <h1>Correlation heat map</h1>
 <pre class="r"><code>plot_correlation(ffp, maxcat = 5L) # Consider removing Group, NUM_DEAL, CREDIT_PROBLEM, RETURN_FLAG - week correlation with BUYER FLAG</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>total_cor_table &lt;- cor(ffp)</p>
-<div id="split-the-data" class="section level3">
-<h3>Split the data</h3>
+<div id="split-the-data" class="section level2">
+<h2>Split the data</h2>
+<div id="create-a-list-of-random-number-ranging-from-1-to-number-of-rows-from-actual-data-and-70-of-the-data-into-training-data" class="section level4">
+<h4>create a list of random number ranging from 1 to number of rows from actual data and 70% of the data into training data</h4>
+<pre class="r"><code>ffp_index &lt;- sort(sample(nrow(ffp), nrow(ffp)*.7)) </code></pre>
+</div>
+<div id="creating-training-data-set" class="section level3">
+<h3>Creating training data set</h3>
+<pre class="r"><code>train &lt;- ffp[ffp_index,]</code></pre>
+</div>
+<div id="creating-validation-data-set" class="section level3">
+<h3>Creating validation data set</h3>
+<pre class="r"><code>test &lt;- ffp[-ffp_index,]</code></pre>
+</div>
+<div id="fit-a-logistic-regression-model-with-the-training-data-set" class="section level3">
+<h3>fit a logistic regression model with the training data set</h3>
+<pre class="r"><code>log.model &lt;- glm(BUYER_FLAG ~., data = train, family = binomial(link = &quot;logit&quot;))</code></pre>
+</div>
+<div id="summary-table" class="section level3">
+<h3>Summary table</h3>
+<pre class="r"><code>summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are significant variables </code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = BUYER_FLAG ~ ., family = binomial(link = &quot;logit&quot;), 
+##     data = train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.0711  -0.4298  -0.4004  -0.3801   2.4394  
+## 
+## Coefficients:
+##                    Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      -3.176e+00  1.248e-01 -25.459  &lt; 2e-16 ***
+## ID               -1.014e-06  1.506e-06  -0.673  0.50073    
+## GROUP             6.979e-04  1.384e-02   0.050  0.95979    
+## CHEF_CLUB        -1.013e+00  2.507e-01  -4.042  5.3e-05 ***
+## NUM_DEAL          8.328e-03  1.316e-02   0.633  0.52682    
+## LAST_DEAL         1.030e-03  6.761e-04   1.523  0.12771    
+## ADVANCE_PURCHASE  1.480e-02  4.615e-03   3.206  0.00134 ** 
+## FARE_L_Y1         2.830e-03  1.690e-03   1.675  0.09391 .  
+## FARE_L_Y2         9.199e-04  2.175e-03   0.423  0.67231    
+## FARE_L_Y3        -4.133e-03  2.199e-03  -1.880  0.06016 .  
+## FARE_L_Y4         3.792e-03  2.204e-03   1.721  0.08530 .  
+## FARE_L_Y5        -2.085e-04  1.926e-03  -0.108  0.91379    
+## POINTS_L_Y1       4.402e-05  9.132e-04   0.048  0.96156    
+## POINTS_L_Y2       1.252e-03  1.135e-03   1.103  0.27020    
+## POINTS_L_Y3      -1.715e-03  1.121e-03  -1.530  0.12594    
+## POINTS_L_Y4       2.050e-04  1.125e-03   0.182  0.85547    
+## POINTS_L_Y5      -3.867e-04  1.000e-03  -0.387  0.69909    
+## CALL_FLAG         1.275e+00  6.241e-02  20.435  &lt; 2e-16 ***
+## CREDIT_PROBLEM   -4.251e-02  6.680e-02  -0.636  0.52453    
+## RETURN_FLAG       2.777e-01  1.986e-01   1.399  0.16192    
+## BENEFIT_FLAG      1.901e-01  6.056e-02   3.140  0.00169 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 19655  on 31498  degrees of freedom
+## Residual deviance: 18985  on 31478  degrees of freedom
+## AIC: 19027
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div id="predict---logistic-regression-model" class="section level3">
+<h3>Predict - logistic regression model</h3>
+<pre class="r"><code>log.predictions &lt;- predict(log.model, test, type=&quot;response&quot;)</code></pre>
+</div>
+<div id="probabilities-top-10" class="section level3">
+<h3>Probabilities top 10</h3>
+<pre class="r"><code>head(log.predictions, 10)</code></pre>
+<pre><code>##          2          9         10         15         16         23         25         29         33         36 
+## 0.07946371 0.29528614 0.12181573 0.06726839 0.09928994 0.09604256 0.08523725 0.09258603 0.07677180 0.10007255</code></pre>
+</div>
+<div id="assign-labels-with-decision-rule-that-if-the-prediction-is-greater-than-0.5-assign-it-1-else-0" class="section level3">
+<h3>Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0</h3>
+<pre class="r"><code>log.prediction.rd &lt;- ifelse(log.predictions &gt; 0.2, 1, 0) # Different cutoffs gives different accuracy measure </code></pre>
+</div>
+<div id="evaluation-of-the-model-using-confusion-matrix" class="section level3">
+<h3>Evaluation of the model using confusion matrix</h3>
+<pre class="r"><code>table(log.prediction.rd, test[,21])</code></pre>
+<pre><code>##                  
+## log.prediction.rd     0     1
+##                 0 11781  1053
+##                 1   474   193</code></pre>
 </div>
 </div>
-<div id="create-a-list-of-random-number-ranging-from-1-to-number-of-rows-from-actual-data-and-70-of-the-data-into-training-data" class="section level1">
-<h1>create a list of random number ranging from 1 to number of rows from actual data and 70% of the data into training data</h1>
-<p>ffp_index &lt;- sort(sample(nrow(ffp), nrow(ffp)*.7))</p>
 </div>
-<div id="creating-training-data-set" class="section level1">
-<h1>Creating training data set</h1>
-<p>train &lt;- ffp[ffp_index,]</p>
+<div id="prediction-accuracy" class="section level1">
+<h1>Prediction Accuracy</h1>
+<pre class="r"><code>accuracy &lt;- table(log.prediction.rd, test[,21])
+sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%</code></pre>
+<pre><code>## [1] 0.8868973</code></pre>
+<div id="logistic-regression-results" class="section level2">
+<h2>Logistic regression results</h2>
+<p>If we use the log.prediction with 10% cutoff, we would get: 297<em>383 - (1908+383)</em>48 = 113,751-109,968 = 3783$ If we use the log.prediction with 20% cutoff, we would get: 198<em>297 - (491+198)</em>48 = 58,806-33,072 = 25,734$ More then 20% cutoff will not produce better results</p>
 </div>
-<div id="creating-validation-data-set" class="section level1">
-<h1>Creating validation data set</h1>
-<p>test &lt;- ffp[-ffp_index,]</p>
-<div id="fit-a-logistic-regression-model-with-the-training-data-set" class="section level2">
-<h2>fit a logistic regression model with the training data set</h2>
-<p>log.model &lt;- glm(BUYER_FLAG ~., data = train, family = binomial(link = “logit”))</p>
-<p>summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are significant variables</p>
+<div id="model-number-2---select-significant-variables-only" class="section level2">
+<h2>Model number 2 - Select significant variables only</h2>
+<pre class="r"><code>train__new &lt;- select(train, -one_of(&#39;GROUP&#39;, &quot;NUM_DEAL&quot;, &quot;CREDIT_PROBLEM&quot;, &quot;RETURN_FLAG&quot;))
+test__new &lt;- select(test, -one_of(&#39;GROUP&#39;, &quot;NUM_DEAL&quot;, &quot;CREDIT_PROBLEM&quot;, &quot;RETURN_FLAG&quot;))</code></pre>
+<div id="fit-a-logistic-regression-model-with-the-training-data-set-1" class="section level3">
+<h3>fit a logistic regression model with the training data set</h3>
+<pre class="r"><code>log.model &lt;- glm(BUYER_FLAG ~., data = train__new, family = binomial(link = &quot;logit&quot;))
+summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are significant variables </code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = BUYER_FLAG ~ ., family = binomial(link = &quot;logit&quot;), 
+##     data = train__new)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.0687  -0.4294  -0.4006  -0.3805   2.4495  
+## 
+## Coefficients:
+##                    Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      -3.143e+00  1.052e-01 -29.873  &lt; 2e-16 ***
+## ID               -1.022e-06  1.506e-06  -0.679  0.49713    
+## CHEF_CLUB        -1.015e+00  2.507e-01  -4.049 5.14e-05 ***
+## LAST_DEAL         7.422e-04  5.018e-04   1.479  0.13917    
+## ADVANCE_PURCHASE  1.477e-02  4.614e-03   3.200  0.00137 ** 
+## FARE_L_Y1         2.840e-03  1.690e-03   1.681  0.09276 .  
+## FARE_L_Y2         9.514e-04  2.177e-03   0.437  0.66207    
+## FARE_L_Y3        -4.123e-03  2.198e-03  -1.876  0.06064 .  
+## FARE_L_Y4         3.828e-03  2.203e-03   1.737  0.08236 .  
+## FARE_L_Y5        -1.977e-04  1.926e-03  -0.103  0.91827    
+## POINTS_L_Y1       4.698e-05  9.132e-04   0.051  0.95897    
+## POINTS_L_Y2       1.250e-03  1.135e-03   1.101  0.27073    
+## POINTS_L_Y3      -1.710e-03  1.121e-03  -1.526  0.12694    
+## POINTS_L_Y4       1.899e-04  1.125e-03   0.169  0.86601    
+## POINTS_L_Y5      -3.717e-04  1.000e-03  -0.372  0.71021    
+## CALL_FLAG         1.275e+00  6.239e-02  20.440  &lt; 2e-16 ***
+## BENEFIT_FLAG      1.893e-01  6.055e-02   3.126  0.00177 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 19655  on 31498  degrees of freedom
+## Residual deviance: 18988  on 31482  degrees of freedom
+## AIC: 19022
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
 </div>
-<div id="predict-using-logistic-regression-model" class="section level2">
-<h2>Predict using logistic regression model</h2>
-<p>log.predictions &lt;- predict(log.model, test, type=“response”)</p>
+<div id="predict-using-logistic-new-regression-model" class="section level3">
+<h3>Predict using logistic new regression model</h3>
+<pre class="r"><code>log.predictions &lt;- predict(log.model, test__new, type=&quot;response&quot;)</code></pre>
 </div>
-</div>
-<div id="probabilities-top-10" class="section level1">
-<h1>Probabilities top 10</h1>
-<p>head(log.predictions, 10)</p>
-</div>
-<div id="assign-labels-with-decision-rule-that-if-the-prediction-is-greater-than-0.5-assign-it-1-else-0" class="section level1">
-<h1>Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0</h1>
-<p>log.prediction.rd &lt;- ifelse(log.predictions &gt; 0.2, 1, 0) # Different cutoffs gives different accuracy measure ### Evaluation of the model using confusion matrix table(log.prediction.rd, test[,21])</p>
-</div>
-<div id="accuracy" class="section level1">
-<h1>Accuracy</h1>
-<p>accuracy &lt;- table(log.prediction.rd, test[,21]) sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%</p>
-</div>
-<div id="business-meaning---if-we-use-the-log.prediction-with-10-cutoff-we-would-get-297383---190838348-113751-109968-3783" class="section level1">
-<h1>Business meaning - If we use the log.prediction with 10% cutoff, we would get: 297<em>383 - (1908+383)</em>48 = 113,751-109,968 = 3783$</h1>
-</div>
-<div id="if-we-use-the-log.prediction-with-20-cutoff-we-would-get-198297---49119848-58806-33072-25734" class="section level1">
-<h1>If we use the log.prediction with 20% cutoff, we would get: 198<em>297 - (491+198)</em>48 = 58,806-33,072 = 25,734$</h1>
-</div>
-<div id="try-creating-new-data-containing-only-significant-values" class="section level1">
-<h1>Try creating new data containing only significant values</h1>
-<p>train__new &lt;- select(train, -one_of(‘GROUP’, “NUM_DEAL”, “CREDIT_PROBLEM”, “RETURN_FLAG”)) test__new &lt;- select(test, -one_of(‘GROUP’, “NUM_DEAL”, “CREDIT_PROBLEM”, “RETURN_FLAG”))</p>
-<div id="fit-a-logistic-regression-model-with-the-training-data-set-1" class="section level2">
-<h2>fit a logistic regression model with the training data set</h2>
-<p>log.model &lt;- glm(BUYER_FLAG ~., data = train__new, family = binomial(link = “logit”))</p>
-<p>summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are significant variables</p>
-</div>
-<div id="predict-using-logistic-regression-model-1" class="section level2">
-<h2>Predict using logistic regression model</h2>
-<p>log.predictions &lt;- predict(log.model, test__new, type=“response”)</p>
 </div>
 </div>
 <div id="probabilities-top-10-1" class="section level1">
 <h1>Probabilities top 10</h1>
-<p>head(log.predictions, 10)</p>
+<pre class="r"><code>head(log.predictions, 10)</code></pre>
+<pre><code>##          2          9         10         15         16         23         25         29         33         36 
+## 0.08022495 0.29640026 0.12218764 0.06798590 0.09732760 0.09670719 0.08506465 0.09305889 0.07727541 0.10027317</code></pre>
+<div id="assign-labels-with-decision-rule-that-if-the-prediction-is-greater-than-0.5-assign-it-1-else-0-1" class="section level3">
+<h3>Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0</h3>
+<pre class="r"><code>log.prediction.rd &lt;- ifelse(log.predictions &gt; 0.2, 1, 0) # Different cutoffs gives different accuracy measure </code></pre>
 </div>
-<div id="assign-labels-with-decision-rule-that-if-the-prediction-is-greater-than-0.5-assign-it-1-else-0-1" class="section level1">
-<h1>Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0</h1>
-<p>log.prediction.rd &lt;- ifelse(log.predictions &gt; 0.2, 1, 0) # Different cutoffs gives different accuracy measure ### Evaluation of the model using confusion matrix table(log.prediction.rd, ffp_test__new[,17])</p>
+<div id="evaluation-of-the-model-using-confusion-matrix-1" class="section level3">
+<h3>Evaluation of the model using confusion matrix</h3>
+<pre class="r"><code>table(log.prediction.rd, test__new[,17])</code></pre>
+<pre><code>##                  
+## log.prediction.rd     0     1
+##                 0 11781  1054
+##                 1   474   192</code></pre>
 </div>
-<div id="accuracy-1" class="section level1">
+</div>
+<div id="accuracy" class="section level1">
 <h1>Accuracy</h1>
-<p>accuracy &lt;- table(log.prediction.rd, ffp_test__new[,17]) sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%</p>
+<pre class="r"><code>accuracy &lt;- table(log.prediction.rd, test__new[,17])
+sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%</code></pre>
+<pre><code>## [1] 0.8868232</code></pre>
 </div>
-<div id="using-less-variables-didnt-change-log-model-accuracy" class="section level1">
-<h1>Using less variables didn’t change log model accuracy</h1>
+<div id="using-less-variables-didnt-change-log-model-accuracy-or-profits-of-the-company" class="section level1">
+<h1>Using less variables didn’t change log model accuracy or profits of the company</h1>
 </div>
 
 

@@ -101,69 +101,108 @@ ffp[, 1:21] <- sapply(ffp[, 1:21], as.numeric)
 plot_correlation(ffp, maxcat = 5L) # Consider removing Group, NUM_DEAL, CREDIT_PROBLEM, RETURN_FLAG - week correlation with BUYER FLAG
 ```
 
-
-total_cor_table <- cor(ffp)
-
-
-### Split the data 
-# create a list of random number ranging from 1 to number of rows from actual data and 70% of the data into training data  
+## Split the data 
+#### create a list of random number ranging from 1 to number of rows from actual data and 70% of the data into training data  
+```{r}
 ffp_index <- sort(sample(nrow(ffp), nrow(ffp)*.7)) 
+```
 
-# Creating training data set
+
+### Creating training data set
+```{r}
 train <- ffp[ffp_index,]
+```
 
-# Creating validation data set 
+### Creating validation data set 
+```{r}
 test <- ffp[-ffp_index,]
+```
 
-
-## fit a logistic regression model with the training data set
+### fit a logistic regression model with the training data set
+```{r}
 log.model <- glm(BUYER_FLAG ~., data = train, family = binomial(link = "logit"))
+```
 
+### Summary table
+```{r}
 summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are significant variables 
+```
 
-## Predict using logistic regression model
+
+
+### Predict - logistic regression model
+```{r}
 log.predictions <- predict(log.model, test, type="response")
+```
 
-# Probabilities top 10
+
+### Probabilities top 10
+```{r}
 head(log.predictions, 10)
+```
 
-# Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0
+### Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0
+```{r}
 log.prediction.rd <- ifelse(log.predictions > 0.2, 1, 0) # Different cutoffs gives different accuracy measure 
-### Evaluation of the model using confusion matrix 
-table(log.prediction.rd, test[,21])
+```
 
-# Accuracy 
+### Evaluation of the model using confusion matrix 
+```{r}
+table(log.prediction.rd, test[,21])
+```
+
+# Prediction Accuracy 
+```{r}
 accuracy <- table(log.prediction.rd, test[,21])
 sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%
+```
 
-# Business meaning - If we use the log.prediction with 10% cutoff, we would get: 297*383 - (1908+383)*48 = 113,751-109,968 = 3783$ 
-# If we use the log.prediction with 20% cutoff, we would get: 198*297 - (491+198)*48 = 58,806-33,072 = 25,734$
+## Logistic regression results 
+If we use the log.prediction with 10% cutoff, we would get: 297*383 - (1908+383)*48 = 113,751-109,968 = 3783$ 
+If we use the log.prediction with 20% cutoff, we would get: 198*297 - (491+198)*48 = 58,806-33,072 = 25,734$
+More then 20% cutoff will not produce better results 
 
-# Try creating new data containing only significant values 
+
+## Model number 2 - Select significant variables only 
+
+```{r}
 train__new <- select(train, -one_of('GROUP', "NUM_DEAL", "CREDIT_PROBLEM", "RETURN_FLAG"))
 test__new <- select(test, -one_of('GROUP', "NUM_DEAL", "CREDIT_PROBLEM", "RETURN_FLAG"))
+```
 
-## fit a logistic regression model with the training data set
+
+### fit a logistic regression model with the training data set
+```{r}
 log.model <- glm(BUYER_FLAG ~., data = train__new, family = binomial(link = "logit"))
-
 summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are significant variables 
+```
 
-## Predict using logistic regression model
+### Predict using logistic new regression model
+```{r}
 log.predictions <- predict(log.model, test__new, type="response")
+```
 
 # Probabilities top 10
+```{r}
 head(log.predictions, 10)
+```
 
-# Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0
+### Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0
+```{r}
 log.prediction.rd <- ifelse(log.predictions > 0.2, 1, 0) # Different cutoffs gives different accuracy measure 
+```
+
 ### Evaluation of the model using confusion matrix 
-table(log.prediction.rd, ffp_test__new[,17])
-
+```{r}
+table(log.prediction.rd, test__new[,17])
+```
 # Accuracy 
-accuracy <- table(log.prediction.rd, ffp_test__new[,17])
+```{r}
+accuracy <- table(log.prediction.rd, test__new[,17])
 sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%
+```
+# Using less variables didn't change log model accuracy or profits of the company
 
-# Using less variables didn't change log model accuracy 
 
 
 
