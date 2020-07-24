@@ -303,14 +303,32 @@ $(document).ready(function () {
 <p>This is an R Markdown based document for presenting the project results. The main target of the project is to build a predictive model.</p>
 <div id="loading-r-packages" class="section level3">
 <h3>Loading R packages</h3>
-<pre class="r"><code>library(tidyverse)
-library(descriptr)
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --</code></pre>
+<pre><code>## &lt;U+221A&gt; ggplot2 3.3.0     &lt;U+221A&gt; purrr   0.3.3
+## &lt;U+221A&gt; tibble  3.0.0     &lt;U+221A&gt; dplyr   0.8.5
+## &lt;U+221A&gt; tidyr   1.0.2     &lt;U+221A&gt; stringr 1.4.0
+## &lt;U+221A&gt; readr   1.3.1     &lt;U+221A&gt; forcats 0.5.0</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(descriptr)
 library(knitr)
 library(ggplot2)
-library(mice)
-library(lattice)
-library(reshape2)
-library(DataExplorer)</code></pre>
+library(mice)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;mice&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     cbind, rbind</code></pre>
+<pre class="r"><code>library(lattice)
+library(reshape2)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;reshape2&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     smiths</code></pre>
+<pre class="r"><code>library(DataExplorer)</code></pre>
 </div>
 <div id="uploading-the-data" class="section level3">
 <h3>Uploading the data</h3>
@@ -479,39 +497,39 @@ ffp[, 1:21] &lt;- sapply(ffp[, 1:21], as.numeric)</code></pre>
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -1.0711  -0.4298  -0.4004  -0.3801   2.4394  
+## -1.0700  -0.4310  -0.4031  -0.3824   2.4751  
 ## 
 ## Coefficients:
 ##                    Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)      -3.176e+00  1.248e-01 -25.459  &lt; 2e-16 ***
-## ID               -1.014e-06  1.506e-06  -0.673  0.50073    
-## GROUP             6.979e-04  1.384e-02   0.050  0.95979    
-## CHEF_CLUB        -1.013e+00  2.507e-01  -4.042  5.3e-05 ***
-## NUM_DEAL          8.328e-03  1.316e-02   0.633  0.52682    
-## LAST_DEAL         1.030e-03  6.761e-04   1.523  0.12771    
-## ADVANCE_PURCHASE  1.480e-02  4.615e-03   3.206  0.00134 ** 
-## FARE_L_Y1         2.830e-03  1.690e-03   1.675  0.09391 .  
-## FARE_L_Y2         9.199e-04  2.175e-03   0.423  0.67231    
-## FARE_L_Y3        -4.133e-03  2.199e-03  -1.880  0.06016 .  
-## FARE_L_Y4         3.792e-03  2.204e-03   1.721  0.08530 .  
-## FARE_L_Y5        -2.085e-04  1.926e-03  -0.108  0.91379    
-## POINTS_L_Y1       4.402e-05  9.132e-04   0.048  0.96156    
-## POINTS_L_Y2       1.252e-03  1.135e-03   1.103  0.27020    
-## POINTS_L_Y3      -1.715e-03  1.121e-03  -1.530  0.12594    
-## POINTS_L_Y4       2.050e-04  1.125e-03   0.182  0.85547    
-## POINTS_L_Y5      -3.867e-04  1.000e-03  -0.387  0.69909    
-## CALL_FLAG         1.275e+00  6.241e-02  20.435  &lt; 2e-16 ***
-## CREDIT_PROBLEM   -4.251e-02  6.680e-02  -0.636  0.52453    
-## RETURN_FLAG       2.777e-01  1.986e-01   1.399  0.16192    
-## BENEFIT_FLAG      1.901e-01  6.056e-02   3.140  0.00169 ** 
+## (Intercept)      -3.229e+00  1.242e-01 -25.991  &lt; 2e-16 ***
+## ID                2.524e-07  1.503e-06   0.168 0.866686    
+## GROUP            -4.375e-03  1.382e-02  -0.317 0.751553    
+## CHEF_CLUB        -1.036e+00  2.557e-01  -4.054 5.04e-05 ***
+## NUM_DEAL          2.079e-02  1.313e-02   1.584 0.113217    
+## LAST_DEAL         1.103e-03  6.826e-04   1.616 0.106127    
+## ADVANCE_PURCHASE  1.525e-02  4.610e-03   3.307 0.000944 ***
+## FARE_L_Y1         1.989e-03  1.701e-03   1.169 0.242315    
+## FARE_L_Y2         2.435e-04  2.171e-03   0.112 0.910699    
+## FARE_L_Y3        -4.410e-03  2.178e-03  -2.025 0.042905 *  
+## FARE_L_Y4         5.681e-03  2.178e-03   2.608 0.009095 ** 
+## FARE_L_Y5         4.972e-05  1.903e-03   0.026 0.979162    
+## POINTS_L_Y1      -2.977e-04  9.073e-04  -0.328 0.742837    
+## POINTS_L_Y2       4.334e-04  1.131e-03   0.383 0.701591    
+## POINTS_L_Y3      -3.466e-04  1.115e-03  -0.311 0.755974    
+## POINTS_L_Y4       2.823e-04  1.122e-03   0.252 0.801363    
+## POINTS_L_Y5      -1.086e-03  1.001e-03  -1.085 0.277817    
+## CALL_FLAG         1.317e+00  6.254e-02  21.064  &lt; 2e-16 ***
+## CREDIT_PROBLEM   -4.784e-02  6.682e-02  -0.716 0.473968    
+## RETURN_FLAG      -1.666e-02  2.267e-01  -0.074 0.941398    
+## BENEFIT_FLAG      1.690e-01  6.088e-02   2.775 0.005516 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 19655  on 31498  degrees of freedom
-## Residual deviance: 18985  on 31478  degrees of freedom
-## AIC: 19027
+##     Null deviance: 19750  on 31498  degrees of freedom
+## Residual deviance: 19066  on 31478  degrees of freedom
+## AIC: 19108
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
 </div>
@@ -522,8 +540,8 @@ ffp[, 1:21] &lt;- sapply(ffp[, 1:21], as.numeric)</code></pre>
 <div id="probabilities-top-10" class="section level3">
 <h3>Probabilities top 10</h3>
 <pre class="r"><code>head(log.predictions, 10)</code></pre>
-<pre><code>##          2          9         10         15         16         23         25         29         33         36 
-## 0.07946371 0.29528614 0.12181573 0.06726839 0.09928994 0.09604256 0.08523725 0.09258603 0.07677180 0.10007255</code></pre>
+<pre><code>##          4          6          7          8         10         11         13         17         19         20 
+## 0.07109688 0.08491578 0.07206675 0.07316841 0.10679302 0.06514456 0.14403890 0.07503545 0.08339935 0.12117595</code></pre>
 </div>
 <div id="assign-labels-with-decision-rule-that-if-the-prediction-is-greater-than-0.5-assign-it-1-else-0" class="section level3">
 <h3>Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0</h3>
@@ -534,8 +552,8 @@ ffp[, 1:21] &lt;- sapply(ffp[, 1:21], as.numeric)</code></pre>
 <pre class="r"><code>table(log.prediction.rd, test[,21])</code></pre>
 <pre><code>##                  
 ## log.prediction.rd     0     1
-##                 0 11781  1053
-##                 1   474   193</code></pre>
+##                 0 11762  1034
+##                 1   514   191</code></pre>
 </div>
 </div>
 </div>
@@ -543,7 +561,7 @@ ffp[, 1:21] &lt;- sapply(ffp[, 1:21], as.numeric)</code></pre>
 <h1>Prediction Accuracy</h1>
 <pre class="r"><code>accuracy &lt;- table(log.prediction.rd, test[,21])
 sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%</code></pre>
-<pre><code>## [1] 0.8868973</code></pre>
+<pre><code>## [1] 0.8853418</code></pre>
 <div id="logistic-regression-results" class="section level2">
 <h2>Logistic regression results</h2>
 <p>If we use the log.prediction with 10% cutoff, we would get: 297<em>383 - (1908+383)</em>48 = 113,751-109,968 = 3783$ If we use the log.prediction with 20% cutoff, we would get: 198<em>297 - (491+198)</em>48 = 58,806-33,072 = 25,734$ More then 20% cutoff will not produce better results</p>
@@ -563,35 +581,35 @@ summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -1.0687  -0.4294  -0.4006  -0.3805   2.4495  
+## -1.0629  -0.4306  -0.4030  -0.3831   2.4815  
 ## 
 ## Coefficients:
 ##                    Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)      -3.143e+00  1.052e-01 -29.873  &lt; 2e-16 ***
-## ID               -1.022e-06  1.506e-06  -0.679  0.49713    
-## CHEF_CLUB        -1.015e+00  2.507e-01  -4.049 5.14e-05 ***
-## LAST_DEAL         7.422e-04  5.018e-04   1.479  0.13917    
-## ADVANCE_PURCHASE  1.477e-02  4.614e-03   3.200  0.00137 ** 
-## FARE_L_Y1         2.840e-03  1.690e-03   1.681  0.09276 .  
-## FARE_L_Y2         9.514e-04  2.177e-03   0.437  0.66207    
-## FARE_L_Y3        -4.123e-03  2.198e-03  -1.876  0.06064 .  
-## FARE_L_Y4         3.828e-03  2.203e-03   1.737  0.08236 .  
-## FARE_L_Y5        -1.977e-04  1.926e-03  -0.103  0.91827    
-## POINTS_L_Y1       4.698e-05  9.132e-04   0.051  0.95897    
-## POINTS_L_Y2       1.250e-03  1.135e-03   1.101  0.27073    
-## POINTS_L_Y3      -1.710e-03  1.121e-03  -1.526  0.12694    
-## POINTS_L_Y4       1.899e-04  1.125e-03   0.169  0.86601    
-## POINTS_L_Y5      -3.717e-04  1.000e-03  -0.372  0.71021    
-## CALL_FLAG         1.275e+00  6.239e-02  20.440  &lt; 2e-16 ***
-## BENEFIT_FLAG      1.893e-01  6.055e-02   3.126  0.00177 ** 
+## (Intercept)      -3.164e+00  1.046e-01 -30.253  &lt; 2e-16 ***
+## ID                2.722e-07  1.503e-06   0.181 0.856263    
+## CHEF_CLUB        -1.037e+00  2.557e-01  -4.056    5e-05 ***
+## LAST_DEAL         3.772e-04  5.086e-04   0.742 0.458279    
+## ADVANCE_PURCHASE  1.525e-02  4.610e-03   3.307 0.000942 ***
+## FARE_L_Y1         2.027e-03  1.700e-03   1.192 0.233158    
+## FARE_L_Y2         3.098e-04  2.169e-03   0.143 0.886455    
+## FARE_L_Y3        -4.353e-03  2.176e-03  -2.000 0.045467 *  
+## FARE_L_Y4         5.711e-03  2.176e-03   2.624 0.008692 ** 
+## FARE_L_Y5         1.047e-04  1.903e-03   0.055 0.956123    
+## POINTS_L_Y1      -3.113e-04  9.071e-04  -0.343 0.731455    
+## POINTS_L_Y2       4.442e-04  1.131e-03   0.393 0.694479    
+## POINTS_L_Y3      -3.453e-04  1.115e-03  -0.310 0.756814    
+## POINTS_L_Y4       2.737e-04  1.122e-03   0.244 0.807305    
+## POINTS_L_Y5      -1.079e-03  1.001e-03  -1.078 0.280991    
+## CALL_FLAG         1.318e+00  6.253e-02  21.083  &lt; 2e-16 ***
+## BENEFIT_FLAG      1.690e-01  6.088e-02   2.776 0.005500 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 19655  on 31498  degrees of freedom
-## Residual deviance: 18988  on 31482  degrees of freedom
-## AIC: 19022
+##     Null deviance: 19750  on 31498  degrees of freedom
+## Residual deviance: 19069  on 31482  degrees of freedom
+## AIC: 19103
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
 </div>
@@ -604,8 +622,8 @@ summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are
 <div id="probabilities-top-10-1" class="section level1">
 <h1>Probabilities top 10</h1>
 <pre class="r"><code>head(log.predictions, 10)</code></pre>
-<pre><code>##          2          9         10         15         16         23         25         29         33         36 
-## 0.08022495 0.29640026 0.12218764 0.06798590 0.09732760 0.09670719 0.08506465 0.09305889 0.07727541 0.10027317</code></pre>
+<pre><code>##          4          6          7          8         10         11         13         17         19         20 
+## 0.06889731 0.08234937 0.06818434 0.07616351 0.10696622 0.06651044 0.14407917 0.08387526 0.07770839 0.12231423</code></pre>
 <div id="assign-labels-with-decision-rule-that-if-the-prediction-is-greater-than-0.5-assign-it-1-else-0-1" class="section level3">
 <h3>Assign labels with decision rule that if the prediction is greater than 0.5, assign it 1 else 0</h3>
 <pre class="r"><code>log.prediction.rd &lt;- ifelse(log.predictions &gt; 0.2, 1, 0) # Different cutoffs gives different accuracy measure </code></pre>
@@ -615,18 +633,158 @@ summary(log.model) # CHEF_CLUB, ADVANCE_PURCHACE, CALL_FLAG and BENEFIT_FLAG are
 <pre class="r"><code>table(log.prediction.rd, test__new[,17])</code></pre>
 <pre><code>##                  
 ## log.prediction.rd     0     1
-##                 0 11781  1054
-##                 1   474   192</code></pre>
+##                 0 11762  1034
+##                 1   514   191</code></pre>
 </div>
-</div>
-<div id="accuracy" class="section level1">
-<h1>Accuracy</h1>
+<div id="accuracy" class="section level3">
+<h3>Accuracy</h3>
 <pre class="r"><code>accuracy &lt;- table(log.prediction.rd, test__new[,17])
 sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%</code></pre>
-<pre><code>## [1] 0.8868232</code></pre>
+<pre><code>## [1] 0.8853418</code></pre>
 </div>
-<div id="using-less-variables-didnt-change-log-model-accuracy-or-profits-of-the-company" class="section level1">
-<h1>Using less variables didn’t change log model accuracy or profits of the company</h1>
+<div id="using-less-variables-didnt-change-log-model-accuracy-or-profits-of-the-company" class="section level3">
+<h3>Using less variables didn’t change log model accuracy or profits of the company</h3>
+</div>
+<div id="random-forest" class="section level2">
+<h2>Random Forest</h2>
+<pre class="r"><code>install.packages(&quot;randomForest&quot;)</code></pre>
+<pre><code>## Installing package into &#39;C:/Users/user/Documents/R/win-library/3.6&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<pre class="r"><code>library(randomForest)</code></pre>
+<pre><code>## randomForest 4.6-14</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;randomForest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     combine</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     margin</code></pre>
+</div>
+</div>
+<div id="convert-numeric-to-factors" class="section level1">
+<h1>Convert numeric to factors</h1>
+<pre class="r"><code>ffp$GROUP &lt;- as.factor(ffp$GROUP)
+ffp$CHEF_CLUB &lt;- as.factor(ffp$CHEF_CLUB)
+ffp$NUM_DEAL &lt;- as.factor(ffp$NUM_DEAL)
+ffp$CALL_FLAG &lt;- as.factor(ffp$CALL_FLAG)
+ffp$CREDIT_PROBLEM &lt;- as.factor(ffp$CREDIT_PROBLEM)
+ffp$RETURN_FLAG &lt;- as.factor(ffp$RETURN_FLAG)
+ffp$BENEFIT_FLAG &lt;- as.factor(ffp$BENEFIT_FLAG)
+ffp$BUYER_FLAG &lt;- as.factor(ffp$BUYER_FLAG)</code></pre>
+<p>Convert response to factor before running random forest</p>
+<pre class="r"><code>ffp$BUYER_FLAG &lt;- as.factor(ffp$BUYER_FLAG)
+train$BUYER_FLAG &lt;- as.factor(train$BUYER_FLAG)
+train__new$BUYER_FLAG &lt;- as.factor(train__new$BUYER_FLAG)</code></pre>
+</div>
+<div id="run-random-forest" class="section level1">
+<h1>Run random forest</h1>
+<pre class="r"><code>rf_classifier = randomForest(train__new$BUYER_FLAG ~ ., data=train__new, ntree=300, mtry=4, importance=TRUE) 
+rf_classifier</code></pre>
+<pre><code>## 
+## Call:
+##  randomForest(formula = train__new$BUYER_FLAG ~ ., data = train__new,      ntree = 300, mtry = 4, importance = TRUE) 
+##                Type of random forest: classification
+##                      Number of trees: 300
+## No. of variables tried at each split: 4
+## 
+##         OOB estimate of  error rate: 9.66%
+## Confusion matrix:
+##       0   1 class.error
+## 0 28401 112 0.003928033
+## 1  2930  56 0.981245814</code></pre>
+<pre class="r"><code>varImpPlot(rf_classifier)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p>Validation set confusion matrix</p>
+<pre class="r"><code>prediction_for_table &lt;- predict(rf_classifier,newdata = test__new[,-17])
+table(observed=test__new[,17],predicted=prediction_for_table)</code></pre>
+<pre><code>##         predicted
+## observed     0     1
+##        0 12241    35
+##        1  1197    28</code></pre>
+<p>89.5 % correctly classified by the rf model. Business wise it means that by using this model only 23 will actually buy and 1220 will not</p>
+<div id="try-improving-the-random-forest-model" class="section level3">
+<h3>Try improving the random forest model</h3>
+<p>500 trees</p>
+<pre class="r"><code>rf_classifier = randomForest(train__new$BUYER_FLAG ~ ., data=train__new, ntree=500, mtry=4, importance=TRUE) 
+rf_classifier </code></pre>
+<pre><code>## 
+## Call:
+##  randomForest(formula = train__new$BUYER_FLAG ~ ., data = train__new,      ntree = 500, mtry = 4, importance = TRUE) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 4
+## 
+##         OOB estimate of  error rate: 9.64%
+## Confusion matrix:
+##       0  1 class.error
+## 0 28422 91 0.003191527
+## 1  2945 41 0.986269257</code></pre>
+<pre class="r"><code>prediction_for_table &lt;- predict(rf_classifier,test__new[,-17])
+table(observed=test__new[,17],predicted=prediction_for_table) # Getting the same OOB error rate as for 300 trees </code></pre>
+<pre><code>##         predicted
+## observed     0     1
+##        0 12242    34
+##        1  1199    26</code></pre>
+<p>mtry = 6</p>
+<pre class="r"><code>rf_classifier = randomForest(train__new$BUYER_FLAG ~ ., data=train__new, ntree=500, mtry=6, importance=TRUE) 
+rf_classifier </code></pre>
+<pre><code>## 
+## Call:
+##  randomForest(formula = train__new$BUYER_FLAG ~ ., data = train__new,      ntree = 500, mtry = 6, importance = TRUE) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 6
+## 
+##         OOB estimate of  error rate: 9.76%
+## Confusion matrix:
+##       0   1 class.error
+## 0 28373 140 0.004910041
+## 1  2935  51 0.982920295</code></pre>
+<pre class="r"><code>prediction_for_table &lt;- predict(rf_classifier,test__new[,-17])
+table(observed=test__new[,17],predicted=prediction_for_table) # Using 6 for mtry increase the OBB error rate </code></pre>
+<pre><code>##         predicted
+## observed     0     1
+##        0 12230    46
+##        1  1197    28</code></pre>
+</div>
+</div>
+<div id="try-removing-highly-correlated-variables" class="section level1">
+<h1>Try removing highly correlated variables</h1>
+<p>library(corrplot) corrplot(cor(test__new %&gt;% select_if(is.numeric), method = “spearman”)) train_new_nocor &lt;- select(train__new, -one_of(“FARE_L_Y2”, “FARE_L_Y3”, “FARE_L_Y4”, “FARE_L_Y5”, “POINTS_L_Y2”, “POINTS_L_Y3”, “POINTS_L_Y4”, “POINTS_L_Y5”)) rf_classifier = randomForest(train_new_nocor<span class="math inline">\(BUYER_FLAG ~ ., data=train_new_nocor, ntree=500, mtry=4, importance=TRUE) rf_classifier prediction_for_table &lt;- predict(rf_classifier,test__new[,-17]) table(observed=test__new[,17],predicted=prediction_for_table) # Better accuracy - only 9.4% OBB error rate. business wise still a loss of 42735\)</span></p>
+<div id="section" class="section level55">
+<p class="heading"></p>
+</div>
+<div id="random-forest-using-rose-for-balancing-the-data" class="section level3">
+<h3>Random forest using ROSE for balancing the data</h3>
+<div id="section-1" class="section level55">
+<p class="heading"></p>
+</div>
+</div>
+</div>
+<div id="data-for-developing-predictive-model" class="section level1">
+<h1>Data for Developing Predictive Model</h1>
+<p>table(train<span class="math inline">\(BUYER_FLAG) prop.table(table(train\)</span>BUYER_FLAG)) summary(train)</p>
+</div>
+<div id="using-rose-for-balancing-methods" class="section level1">
+<h1>Using ROSE for balancing methods</h1>
+<p>library(ROSE) over &lt;- ovun.sample(BUYER_FLAG~., data = train, method = “over”, N = 57148)<span class="math inline">\(data under &lt;- ovun.sample(BUYER_FLAG~., data = train, method = &quot;under&quot;, N = 5850)\)</span>data both &lt;- ovun.sample(BUYER_FLAG~., data=train, method = “both”, p = 0.5, seed = 222, N = 31499)<span class="math inline">\(data rose &lt;- ROSE(BUYER_FLAG~., data = train, N = 500, seed=111)\)</span>data</p>
+<div id="predictive-model---random-forest" class="section level3">
+<h3>Predictive model - Random Forest</h3>
+<p>library(randomForest) rftrain &lt;- randomForest(BUYER_FLAG~., data = train) rfover &lt;- randomForest(BUYER_FLAG~., data = over) rfunder &lt;- randomForest(BUYER_FLAG~., data = under) rfboth &lt;- randomForest(BUYER_FLAG~., data = both) rfrose &lt;- randomForest(BUYER_FLAG~., data=rose)</p>
+</div>
+<div id="evaluating-the-model-with-test-data" class="section level3">
+<h3>Evaluating the model with test data</h3>
+<p>library(caret)</p>
+<p>names &lt;- c(2:4,17:20) test[,names] &lt;- lapply(test[,names] , factor) str(test)</p>
+<p>names &lt;- c(2:4,17:20) train[,names] &lt;- lapply(train[,names] , factor) str(train)</p>
+<p>levels(test<span class="math inline">\(NUM_DEAL) &lt;- levels(train\)</span>NUM_DEAL)</p>
+</div>
+<div id="evaluating-the-model-with-test-data-1" class="section level3">
+<h3>Evaluating the model with test data</h3>
+<p>confusionMatrix(predict(rftrain, test), test<span class="math inline">\(BUYER_FLAG, positive = &#39;1&#39;) # profit = -744\)</span> Sensitivity = 0.004 confusionMatrix(predict(rfunder, test), test<span class="math inline">\(BUYER_FLAG, positive = &#39;1&#39;) # profit = 97,792\)</span> Sensitivity = 0.57 confusionMatrix(predict(rfover, test), test<span class="math inline">\(BUYER_FLAG, positive = &#39;1&#39;) # profit = 22,260\)</span> Sensitivity = 0.077 confusionMatrix(predict(rfboth, test), test<span class="math inline">\(BUYER_FLAG, positive = &#39;1&#39;) # profit = 89,889\)</span> Sensitivity = 0.342 confusionMatrix(predict(rfrose, test), test$BUYER_FLAG, positive = ‘1’) # profit = 53,037 Sensitivity = 0.61</p>
+</div>
 </div>
 
 

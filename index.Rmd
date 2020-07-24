@@ -196,12 +196,130 @@ log.prediction.rd <- ifelse(log.predictions > 0.2, 1, 0) # Different cutoffs giv
 ```{r}
 table(log.prediction.rd, test__new[,17])
 ```
-# Accuracy 
+### Accuracy 
 ```{r}
 accuracy <- table(log.prediction.rd, test__new[,17])
 sum(diag(accuracy))/sum(accuracy) # Accuracy = 88%
 ```
-# Using less variables didn't change log model accuracy or profits of the company
+### Using less variables didn't change log model accuracy or profits of the company
+
+## Random Forest 
+```{r echo=T, results='hide'}
+install.packages("randomForest")
+library(randomForest)
+```
+
+
+# Convert numeric to factors
+```{r}
+ffp$GROUP <- as.factor(ffp$GROUP)
+ffp$CHEF_CLUB <- as.factor(ffp$CHEF_CLUB)
+ffp$NUM_DEAL <- as.factor(ffp$NUM_DEAL)
+ffp$CALL_FLAG <- as.factor(ffp$CALL_FLAG)
+ffp$CREDIT_PROBLEM <- as.factor(ffp$CREDIT_PROBLEM)
+ffp$RETURN_FLAG <- as.factor(ffp$RETURN_FLAG)
+ffp$BENEFIT_FLAG <- as.factor(ffp$BENEFIT_FLAG)
+ffp$BUYER_FLAG <- as.factor(ffp$BUYER_FLAG)
+```
+
+
+Convert response to factor before running random forest
+```{r}
+ffp$BUYER_FLAG <- as.factor(ffp$BUYER_FLAG)
+train$BUYER_FLAG <- as.factor(train$BUYER_FLAG)
+train__new$BUYER_FLAG <- as.factor(train__new$BUYER_FLAG)
+```
+
+# Run random forest
+```{r}
+rf_classifier = randomForest(train__new$BUYER_FLAG ~ ., data=train__new, ntree=300, mtry=4, importance=TRUE) 
+rf_classifier
+```
+```{r}
+varImpPlot(rf_classifier)
+```
+
+Validation set confusion matrix 
+```{r}
+prediction_for_table <- predict(rf_classifier,newdata = test__new[,-17])
+table(observed=test__new[,17],predicted=prediction_for_table)
+```
+
+89.5 % correctly classified by the rf model. Business wise it means that by using this model only 23 will actually buy and 1220 will not
+
+### Try improving the random forest model  
+
+500 trees
+```{r}
+rf_classifier = randomForest(train__new$BUYER_FLAG ~ ., data=train__new, ntree=500, mtry=4, importance=TRUE) 
+rf_classifier 
+prediction_for_table <- predict(rf_classifier,test__new[,-17])
+table(observed=test__new[,17],predicted=prediction_for_table) # Getting the same OOB error rate as for 300 trees 
+```
+
+
+mtry = 6
+```{r}
+rf_classifier = randomForest(train__new$BUYER_FLAG ~ ., data=train__new, ntree=500, mtry=6, importance=TRUE) 
+rf_classifier 
+prediction_for_table <- predict(rf_classifier,test__new[,-17])
+table(observed=test__new[,17],predicted=prediction_for_table) # Using 6 for mtry increase the OBB error rate 
+```
+
+# Try removing highly correlated variables 
+library(corrplot)
+corrplot(cor(test__new %>% select_if(is.numeric), 
+                       method = "spearman"))
+train_new_nocor <- select(train__new, -one_of("FARE_L_Y2", "FARE_L_Y3", "FARE_L_Y4", "FARE_L_Y5", "POINTS_L_Y2", "POINTS_L_Y3", "POINTS_L_Y4", "POINTS_L_Y5"))
+rf_classifier = randomForest(train_new_nocor$BUYER_FLAG ~ ., data=train_new_nocor, ntree=500, mtry=4, importance=TRUE) 
+rf_classifier 
+prediction_for_table <- predict(rf_classifier,test__new[,-17])
+table(observed=test__new[,17],predicted=prediction_for_table) # Better accuracy - only 9.4% OBB error rate. business wise still a loss of 42735$ 
+
+#######################################################
+### Random forest using ROSE for balancing the data ###
+#######################################################
+
+# Data for Developing Predictive Model
+table(train$BUYER_FLAG)
+prop.table(table(train$BUYER_FLAG))
+summary(train)
+
+# Using ROSE for balancing methods 
+library(ROSE)
+over <- ovun.sample(BUYER_FLAG~., data = train, method = "over", N = 57148)$data
+under <- ovun.sample(BUYER_FLAG~., data = train, method = "under", N = 5850)$data
+both <- ovun.sample(BUYER_FLAG~., data=train, method = "both", p = 0.5, seed = 222, N = 31499)$data
+rose <- ROSE(BUYER_FLAG~., data = train, N = 500, seed=111)$data
+
+### Predictive model - Random Forest
+library(randomForest)
+rftrain <- randomForest(BUYER_FLAG~., data = train)
+rfover <- randomForest(BUYER_FLAG~., data = over)
+rfunder <- randomForest(BUYER_FLAG~., data = under)
+rfboth <- randomForest(BUYER_FLAG~., data = both)
+rfrose <- randomForest(BUYER_FLAG~., data=rose)
+
+
+### Evaluating the model with test data
+library(caret)
+
+names <- c(2:4,17:20)
+test[,names] <- lapply(test[,names] , factor)
+str(test)
+
+names <- c(2:4,17:20)
+train[,names] <- lapply(train[,names] , factor)
+str(train)
+
+levels(test$NUM_DEAL) <- levels(train$NUM_DEAL)
+
+### Evaluating the model with test data
+confusionMatrix(predict(rftrain, test), test$BUYER_FLAG, positive = '1') # profit = -744$   Sensitivity = 0.004
+confusionMatrix(predict(rfunder, test), test$BUYER_FLAG, positive = '1') # profit = 97,792$  Sensitivity = 0.57 
+confusionMatrix(predict(rfover, test), test$BUYER_FLAG, positive = '1')  # profit = 22,260$  Sensitivity = 0.077
+confusionMatrix(predict(rfboth, test), test$BUYER_FLAG, positive = '1')  # profit = 89,889$  Sensitivity = 0.342
+confusionMatrix(predict(rfrose, test), test$BUYER_FLAG, positive = '1')  # profit = 53,037 Sensitivity = 0.61
 
 
 
