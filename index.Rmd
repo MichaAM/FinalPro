@@ -266,61 +266,84 @@ prediction_for_table <- predict(rf_classifier,test__new[,-17])
 table(observed=test__new[,17],predicted=prediction_for_table) # Using 6 for mtry increase the OBB error rate 
 ```
 
-# Try removing highly correlated variables 
+# Try removing highly correlated variables
+
+```{r}
 library(corrplot)
 corrplot(cor(test__new %>% select_if(is.numeric), 
                        method = "spearman"))
-train_new_nocor <- select(train__new, -one_of("FARE_L_Y2", "FARE_L_Y3", "FARE_L_Y4", "FARE_L_Y5", "POINTS_L_Y2", "POINTS_L_Y3", "POINTS_L_Y4", "POINTS_L_Y5"))
-rf_classifier = randomForest(train_new_nocor$BUYER_FLAG ~ ., data=train_new_nocor, ntree=500, mtry=4, importance=TRUE) 
-rf_classifier 
-prediction_for_table <- predict(rf_classifier,test__new[,-17])
-table(observed=test__new[,17],predicted=prediction_for_table) # Better accuracy - only 9.4% OBB error rate. business wise still a loss of 42735$ 
 
-#######################################################
-### Random forest using ROSE for balancing the data ###
-#######################################################
+train_new_nocor <- select(train__new, -one_of("FARE_L_Y2", "FARE_L_Y3", "FARE_L_Y4", "FARE_L_Y5", "POINTS_L_Y2", "POINTS_L_Y3", "POINTS_L_Y4", "POINTS_L_Y5"))
+
+rf_classifier = randomForest(train_new_nocor$BUYER_FLAG ~ ., data=train_new_nocor, ntree=500, mtry=4, importance=TRUE)
+
+rf_classifier 
+
+prediction_for_table <- predict(rf_classifier,test__new[,-17])
+```
+
+```{r}
+table(observed=test__new[,17],predicted=prediction_for_table) # Better accuracy - only 9.4% OBB error rate. business wise still a loss of 42735$ 
+```
+
+# Random forest using ROSE for balancing the data
 
 # Data for Developing Predictive Model
+```{r}
 table(train$BUYER_FLAG)
 prop.table(table(train$BUYER_FLAG))
 summary(train)
+```
 
-# Using ROSE for balancing methods 
+
+Using ROSE for balancing methods 
+```{r}
 library(ROSE)
 over <- ovun.sample(BUYER_FLAG~., data = train, method = "over", N = 57148)$data
 under <- ovun.sample(BUYER_FLAG~., data = train, method = "under", N = 5850)$data
 both <- ovun.sample(BUYER_FLAG~., data=train, method = "both", p = 0.5, seed = 222, N = 31499)$data
 rose <- ROSE(BUYER_FLAG~., data = train, N = 500, seed=111)$data
-
+```
 ### Predictive model - Random Forest
+```{r}
 library(randomForest)
 rftrain <- randomForest(BUYER_FLAG~., data = train)
 rfover <- randomForest(BUYER_FLAG~., data = over)
 rfunder <- randomForest(BUYER_FLAG~., data = under)
 rfboth <- randomForest(BUYER_FLAG~., data = both)
 rfrose <- randomForest(BUYER_FLAG~., data=rose)
-
+```
 
 ### Evaluating the model with test data
+```{r}
 library(caret)
+```
 
+```{r}
 names <- c(2:4,17:20)
 test[,names] <- lapply(test[,names] , factor)
 str(test)
+```
 
+```{r}
 names <- c(2:4,17:20)
 train[,names] <- lapply(train[,names] , factor)
 str(train)
+```
 
+```{r}
 levels(test$NUM_DEAL) <- levels(train$NUM_DEAL)
+```
+
 
 ### Evaluating the model with test data
+```{r}
 confusionMatrix(predict(rftrain, test), test$BUYER_FLAG, positive = '1') # profit = -744$   Sensitivity = 0.004
 confusionMatrix(predict(rfunder, test), test$BUYER_FLAG, positive = '1') # profit = 97,792$  Sensitivity = 0.57 
 confusionMatrix(predict(rfover, test), test$BUYER_FLAG, positive = '1')  # profit = 22,260$  Sensitivity = 0.077
 confusionMatrix(predict(rfboth, test), test$BUYER_FLAG, positive = '1')  # profit = 89,889$  Sensitivity = 0.342
 confusionMatrix(predict(rfrose, test), test$BUYER_FLAG, positive = '1')  # profit = 53,037 Sensitivity = 0.61
-
+```
 
 
 
